@@ -1,13 +1,35 @@
-import { HttpLink } from '@apollo/client';
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import Constants from 'expo-constants';
+import { setContext } from '@apollo/client/link/context';
 
 
-const createApolloClient = () => {
-    return new ApolloClient({
-        // "To initialize Apollo Client, you must specify a 'link' property in the options object."
-        link: new HttpLink({ uri: 'http://10.10.12.192:4000/graphql' }),
-        cache: new InMemoryCache(),
+const { apolloUri } = Constants.expoConfig.extra;
+
+// function is deprecated but used in learning material
+const httpLink = createHttpLink({
+    uri: apolloUri,
+});
+
+const createApolloClient = (authStorage) => {
+    const authLink = setContext(async (_, { headers }) => {
+        try {
+            const accessToken = await authStorage.getAccessToken();
+            return {
+                headers: {
+                    ...headers,
+                    authorization: accessToken ? `Bearer ${accessToken}` : '',
+                }
+            };
+        } catch (e) {
+            // for some reason eslint thinks console is undefined, but it isn't
+            console.log(e);
+            return { headers };
+        }
     });
-};
+    return new ApolloClient({
+        link: authLink.concat(httpLink),
+        cache: new InMemoryCache(),
+    })
+}
 
 export default createApolloClient;

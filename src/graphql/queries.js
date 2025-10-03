@@ -19,3 +19,12 @@ query ExampleQuery {
   }
 }
 `
+
+export const ME = gql`
+query MeQuery {
+  me {
+    id
+    username
+  }
+}
+`
