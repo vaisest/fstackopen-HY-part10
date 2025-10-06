@@ -4,7 +4,6 @@ import theme from "../theme";
 import Text from "./Text";
 import { object, string } from "yup";
 import useSignIn from "../hooks/useSignIn";
-import { redirect } from "react-router-native";
 import { useNavigate } from "react-router-native";
 
 const validationSchema = object({
@@ -49,6 +48,54 @@ const styles = StyleSheet.create({
   },
 });
 
+export const SignInContainer = ({ onSubmit }) => (
+  <Formik
+    initialValues={{ username: "", password: "" }}
+    onSubmit={onSubmit}
+    validationSchema={validationSchema}
+  >
+    {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+      <View style={styles.view} testID="signInContainerView">
+        <View>
+          <TextInput
+            id="username"
+            name="username"
+            onChangeText={handleChange("username")}
+            onBlur={handleBlur("username")}
+            value={values.username}
+            placeholder="Username"
+            style={[styles.input, errors.username && styles.inputError]}
+            placeholderTextColor="rgb(175, 175, 175)"
+          />
+          {touched.username && errors.username && (
+            <Text style={styles.errorLabel}>{errors.username}</Text>
+          )}
+        </View>
+        <View>
+          <TextInput
+            id="password"
+            name="password"
+            onChangeText={handleChange("password")}
+            onBlur={handleBlur("password")}
+            value={values.password}
+            placeholder="Password"
+            style={[styles.input, errors.password && styles.inputError]}
+            placeholderTextColor="rgb(175, 175, 175)"
+            secureTextEntry
+          />
+          {touched.password && errors.password && (
+            <Text style={styles.errorLabel}>{errors.password}</Text>
+          )}
+        </View>
+
+        <Pressable onPress={handleSubmit} style={styles.submitButton}>
+          <Text style={styles.submitText}>Sign in</Text>
+        </Pressable>
+      </View>
+    )}
+  </Formik>
+);
+
 const SignIn = () => {
   const [signIn] = useSignIn();
   const navigate = useNavigate();
@@ -64,60 +111,7 @@ const SignIn = () => {
     }
   };
 
-  return (
-    <Formik
-      initialValues={{ username: "", password: "" }}
-      onSubmit={onSubmit}
-      validationSchema={validationSchema}
-    >
-      {({
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        values,
-        errors,
-        touched,
-      }) => (
-        <View style={styles.view}>
-          <View>
-            <TextInput
-              id="username"
-              name="username"
-              onChangeText={handleChange("username")}
-              onBlur={handleBlur("username")}
-              value={values.username}
-              placeholder="Username"
-              style={[styles.input, errors.username && styles.inputError]}
-              placeholderTextColor="rgb(175, 175, 175)"
-            />
-            {touched.username && errors.username && (
-              <Text style={styles.errorLabel}>{errors.username}</Text>
-            )}
-          </View>
-          <View>
-            <TextInput
-              id="password"
-              name="password"
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
-              value={values.password}
-              placeholder="Password"
-              style={[styles.input, errors.password && styles.inputError]}
-              placeholderTextColor="rgb(175, 175, 175)"
-              secureTextEntry
-            />
-            {touched.password && errors.password && (
-              <Text style={styles.errorLabel}>{errors.password}</Text>
-            )}
-          </View>
-
-          <Pressable onPress={handleSubmit} style={styles.submitButton}>
-            <Text style={styles.submitText}>Sign in</Text>
-          </Pressable>
-        </View>
-      )}
-    </Formik>
-  );
+  return <SignInContainer onSubmit={onSubmit} />;
 };
 
 export default SignIn;

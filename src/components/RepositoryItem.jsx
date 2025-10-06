@@ -1,10 +1,12 @@
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, Pressable } from "react-native";
 import Text from "./Text";
 import theme from "../theme";
+import { useNavigate } from "react-router-native";
 
 const DescriptionView = ({ item }) => (
   <View style={{ flexDirection: "row" }}>
     <Image
+      testID="repositoryItemIcon"
       source={item.ownerAvatarUrl}
       style={{ width: 50, height: 50, borderRadius: 5 }}
     ></Image>
@@ -77,10 +79,41 @@ const StatsView = ({ item }) => {
   );
 };
 
-const RepositoryItem = ({ item }) => (
-  <View style={{ backgroundColor: "white", padding: 20, rowGap: 20 }}>
-    <DescriptionView item={item} />
-    <StatsView item={item} />
-  </View>
+const OpenButton = () => (
+  <Pressable
+    style={{
+      borderRadius: 5,
+      backgroundColor: theme.colors.primary,
+      padding: 20,
+    }}
+  >
+    <Text
+      style={{
+        color: theme.colors.white,
+        fontSize: theme.fontSizes.subheading,
+        textAlign: "center",
+      }}
+    >
+      Open on Github
+    </Text>
+  </Pressable>
 );
+
+const RepositoryItem = ({ item, isSingleview, noRouter }) => {
+  // for unit tests where no router is used
+  const navigate = noRouter ? () => null : useNavigate();
+
+  return (
+    <Pressable onPress={() => navigate(`/repo/${item.id}`)}>
+      <View
+        style={{ backgroundColor: "white", padding: 20, rowGap: 20 }}
+        testID="repositoryItem"
+      >
+        <DescriptionView item={item} />
+        <StatsView item={item} />
+        {isSingleview && <OpenButton url={item.url} />}
+      </View>
+    </Pressable>
+  );
+};
 export default RepositoryItem;
