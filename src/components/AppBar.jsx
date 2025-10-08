@@ -21,7 +21,6 @@ const AppBar = (props) => {
   const navigate = useNavigate();
 
   const { username } = useMe();
-  console.log("appbar username:", username);
 
   const logOut = async () => {
     console.log("trying to log out");
@@ -40,9 +39,16 @@ const AppBar = (props) => {
             </Link>
           </Pressable>
           {username ? (
-            <Pressable style={styles.tab} onPress={logOut}>
-              <Text style={styles.text}>Log out</Text>
-            </Pressable>
+            <>
+              <Pressable style={styles.tab}>
+                <Link to="/review">
+                  <Text style={styles.text}>Create a review</Text>
+                </Link>
+              </Pressable>
+              <Pressable style={styles.tab} onPress={logOut}>
+                <Text style={styles.text}>Log out</Text>
+              </Pressable>
+            </>
           ) : (
             <Pressable style={styles.tab}>
               <Link to="/login">

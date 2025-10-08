@@ -16,7 +16,7 @@ const validationSchema = object({
     .min(6, "Password must be at least 6 characters"),
 });
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   view: {
     padding: 18,
     rowGap: 18,

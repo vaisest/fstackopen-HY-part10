@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react-native";
 import { RepositoryListContainer } from "../../components/RepositoryList";
-import { Router } from "react-router-native";
 
 describe('RepositoryList', () => {
     describe('RepositoryListContainer', () => {

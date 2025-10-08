@@ -20,7 +20,7 @@ export const RepositoryListContainer = ({ repositories, noRouter }) => {
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => (
-        <RepositoryItem item={item} noRouter></RepositoryItem>
+        <RepositoryItem item={item} noRouter={noRouter}></RepositoryItem>
       )}
     />
   );
