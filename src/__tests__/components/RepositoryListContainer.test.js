@@ -1,9 +1,9 @@
-import { render, screen } from "@testing-library/react-native";
+import { render, screen, waitFor } from "@testing-library/react-native";
 import { RepositoryListContainer } from "../../components/RepositoryList";
 
 describe('RepositoryList', () => {
     describe('RepositoryListContainer', () => {
-        it('renders repository information correctly', () => {
+        it('renders repository information correctly', async () => {
             const repositories = {
                 totalCount: 8,
                 pageInfo: {
@@ -47,8 +47,8 @@ describe('RepositoryList', () => {
                 ],
             };
 
-            render(<RepositoryListContainer repositories={repositories} />);
-
+            render(<RepositoryListContainer repositories={repositories} noRouter />);
+            await waitFor(() => expect(screen.getAllByTestId("repositoryItem")).toHaveLength(2))
             const repositoryItems = screen.getAllByTestId('repositoryItem');
             const [firstRepositoryItem, secondRepositoryItem] = repositoryItems;
             const repositoryItemIcons = screen.getAllByTestId('repositoryItemIcon');
