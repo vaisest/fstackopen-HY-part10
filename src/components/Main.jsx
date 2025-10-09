@@ -1,5 +1,4 @@
-import Constants from "expo-constants";
-import { Text, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Route, Routes, Navigate } from "react-router-native";
 import RepositoryList from "./RepositoryList";
 import AppBar from "./AppBar";
@@ -7,6 +6,7 @@ import SignIn from "./SignIn";
 import SingleRepository from "./SingleRepository";
 import ReviewCreation from "./ReviewCreation";
 import UserCreation from "./UserCreation.";
+import MyReviews from "./MyReviews";
 
 const styles = StyleSheet.create({
   container: {
@@ -25,6 +25,7 @@ const Main = () => {
         <Route path="/login" element={<SignIn />} />
         <Route path="/repo/:id" element={<SingleRepository />} />
         <Route path="/review" element={<ReviewCreation />} />
+        <Route path="/myreviews" element={<MyReviews />} />
         <Route path="/register" element={<UserCreation />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

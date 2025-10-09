@@ -11,8 +11,7 @@ const RepositoryInfo = ({ repository }) => {
   return <RepositoryItem item={repository} isSingleview />;
 };
 
-const ReviewItem = ({ review }) => {
-  console.log(review);
+export const ReviewItem = ({ review, noUsername }) => {
   const date = parseISO(review.createdAt);
   const formattedDate = format(date, "d.M.y");
   return (
@@ -34,7 +33,6 @@ const ReviewItem = ({ review }) => {
           borderWidth: 2,
           borderStyle: "solid",
           justifyContent: "center",
-          // padding: 20,
         }}
       >
         <Text
@@ -56,7 +54,7 @@ const ReviewItem = ({ review }) => {
             fontSize: theme.fontSizes.subheading,
           }}
         >
-          {review.user.username}
+          {noUsername ? review.repository.fullName : review.user.username}
         </Text>
         <Text
           style={{
@@ -91,7 +89,6 @@ const SingleRepository = () => {
       renderItem={({ item }) => <ReviewItem review={item} />}
       keyExtractor={({ id }) => id}
       ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
-      // ...
     />
   );
 };

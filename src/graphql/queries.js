@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_REPOSITORIES = gql`
-query RepositoriesQuery {
-  repositories {
+query RepositoriesQuery($searchKeyword: String, $orderDirection: OrderDirection, $orderBy: AllRepositoriesOrderBy) {
+  repositories(searchKeyword: $searchKeyword, orderDirection: $orderDirection, orderBy: $orderBy) {
     edges {
       node {
         fullName
@@ -53,10 +53,24 @@ query RepositoryQuery($id: ID!) {
   `
 
 export const ME = gql`
-query MeQuery {
+query MeQuery($withReviews: Boolean!) {
   me {
     id
     username
+    reviews @include(if: $withReviews)  {
+      edges {
+        node {
+          createdAt
+          id
+          rating
+          text
+          repository {
+            fullName
+            id
+          }
+        }
+      }
+    }
   }
 }
 `
